@@ -330,7 +330,7 @@ RLS: INSERT publico
 
 ## Contacto y canales externos
 
-- **WhatsApp:** `+5491144390930` / `https://wa.me/5491144390930`
+- **WhatsApp:** `+5491176714108` / `https://wa.me/5491176714108`
 - **CTA principal:** `/contacto` — "Agendar demo"
 
 ---
