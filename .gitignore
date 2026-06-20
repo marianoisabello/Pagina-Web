@@ -2,7 +2,7 @@
 node_modules/
 
 # Build output
-dist/
+# dist/ — committed to repo for Hostinger Git deployment
 
 # Environment variables
 .env
