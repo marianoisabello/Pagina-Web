@@ -41,23 +41,23 @@ serve(async (req) => {
 
   try {
     const { messages, language = "es" } = await req.json();
-    const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
-    if (!OPENAI_API_KEY) throw new Error("OPENAI_API_KEY not configured");
+    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
+    if (!ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
 
     const systemPrompt = language === "en" ? SYSTEM_PROMPT_EN : SYSTEM_PROMPT_ES;
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...(messages || []),
-        ],
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 512,
+        system: systemPrompt,
+        messages: messages || [],
       }),
     });
 
@@ -83,7 +83,7 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const reply = data?.choices?.[0]?.message?.content ?? "";
+    const reply = data?.content?.[0]?.text ?? "";
     return new Response(JSON.stringify({ reply }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

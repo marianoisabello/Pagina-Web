@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Loader2, Sparkles } from "lucide-react";
+import { MessageSquare, X, Send, Loader2, Sparkles, Trash2, Maximize2, Minimize2 } from "lucide-react";
 import { useLang } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -25,6 +25,7 @@ const QUICK_REPLIES_EN = [
 const PampaiAssistant = () => {
   const { lang, t } = useLang();
   const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -86,7 +87,7 @@ const PampaiAssistant = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-44 right-6 z-50 w-[min(92vw,380px)] h-[min(70vh,560px)] rounded-2xl border border-soft bg-[hsl(var(--bg-elevated))] shadow-2xl flex flex-col overflow-hidden"
+            className={`fixed bottom-44 right-6 z-50 rounded-2xl border border-soft bg-[hsl(var(--bg-elevated))] shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ${expanded ? "w-[min(92vw,600px)] h-[min(85vh,760px)]" : "w-[min(92vw,380px)] h-[min(70vh,560px)]"}`}
           >
             <div className="flex items-center justify-between px-4 py-3 border-b border-soft bg-pampai-gradient-soft">
               <div className="flex items-center gap-2">
@@ -96,9 +97,27 @@ const PampaiAssistant = () => {
                   <p className="text-[10px] text-ink-muted">{t("Asistente de IA", "AI assistant")}</p>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="text-ink-muted hover:text-foreground">
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                {messages.length > 0 && (
+                  <button
+                    onClick={() => setMessages([])}
+                    title={t("Limpiar chat", "Clear chat") as string}
+                    className="text-ink-muted hover:text-foreground"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                )}
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  title={expanded ? t("Reducir", "Minimize") as string : t("Agrandar", "Expand") as string}
+                  className="text-ink-muted hover:text-foreground"
+                >
+                  {expanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                </button>
+                <button onClick={() => setOpen(false)} className="text-ink-muted hover:text-foreground">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
