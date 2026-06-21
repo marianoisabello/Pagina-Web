@@ -1,12 +1,4 @@
 Options -MultiViews
-
-<FilesMatch "\.m?js$">
-    ForceType application/javascript
-</FilesMatch>
-<FilesMatch "\.css$">
-    ForceType text/css
-</FilesMatch>
-
 RewriteEngine On
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f

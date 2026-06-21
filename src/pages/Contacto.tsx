@@ -71,7 +71,7 @@ const Contacto = () => {
             <li className="flex items-center gap-3 text-ink-muted">
               <MessageCircle className="w-4 h-4 text-[hsl(var(--teal))]" />
               <a href="https://wa.me/5491176714108" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
-                +54 9 11 4439 0930
+                +54 911 7671 4108
               </a>
             </li>
             <li className="flex items-center gap-3 text-ink-muted">
